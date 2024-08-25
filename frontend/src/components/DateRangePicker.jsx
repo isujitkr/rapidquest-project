@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const DateRangePicker = ({ onDateChange }) => {
-
   const [startDate, setStartDate] = useState('2020-01-01');
   const [endDate, setEndDate] = useState('2021-01-08');
 
+  const prevStartDateRef = useRef();
+  const prevEndDateRef = useRef();
+
   useEffect(() => {
-    onDateChange(startDate, endDate);
-  }, [onDateChange]);
+    if (
+      prevStartDateRef.current !== startDate ||
+      prevEndDateRef.current !== endDate
+    ) {
+      onDateChange(startDate, endDate);
+    }
+
+    prevStartDateRef.current = startDate;
+    prevEndDateRef.current = endDate;
+  }, [startDate, endDate, onDateChange]); 
 
   return (
     <div>
